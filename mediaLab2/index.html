@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lab2 - VR application</title>
+    <meta name="description" content="Basic example for Point Cloud component."></meta>
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe-pointcloud-component.js"></script>
+    <style type="text/css">
+	@font-face{
+		font-family:"Ionicons";			
+		src:url("assets/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"),url("assets/ionicons.ttf?v=2.0.1") format("truetype"),url("assets/ionicons.woff?v=2.0.1") format("woff"),url("assets/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+		font-weight:normal;
+		font-style:normal
+	}
+	body{font-family:Ionicons;}
+    </style>
+
+    <script src="js/aframe-gui.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="groundTexture" src="floor.jpg">
+        <img id="skyTexture" src="sky.jpg">
+      </a-assets>
+
+	<a-gui-flex-container 
+		flex-direction="row" justify-content="center" align-items="normal"
+		opacity="0.9" width="1.2" height="0.75" position="2 3 0" rotation="0 -30 0">
+		
+                <a-gui-icon-button
+                        width="0.5" height="0.5"
+                        onclick="slideRight" key-code="65"
+                        icon="android-arrow-dropleft"
+			margin="0.05 0 0 0">
+		</a-gui-icon-button>
+                <a-gui-icon-button
+                        width="0.5" height="0.5"
+                        onclick="slideLeft" key-code="68"
+                        icon="android-arrow-dropright"
+                        margin="0 0 0 0.05">
+                </a-gui-icon-button>
+
+	</a-gui-flex-container>
+
+	<a-gui-flex-container
+		flex-direction="column" justify-content="center" align-items="normal" component-padding="0.1" 
+		opacity="0.9" width="0.75" height="1.2" position="-2 3 0" rotation="0 30 0">
+		
+		<a-gui-icon-button
+			width="0.5" height="0.5"
+			onclick="backDown" key-code="87"
+			icon="android-arrow-dropup"
+			margin="0 0 0.05 0">
+		</a-gui-icon-button>
+		<a-gui-icon-button
+			width="0.5" height="0.5"
+			onclick="closeUp" key-code="83"
+			icon="android-arrow-dropdown"
+			margin="0 0.05 0 0">
+		</a-gui-icon-button>
+	</a-gui-flex-container> 
+
+	<a-gui-flex-container
+                flex-direction="column" justify-content="center" align-items="normal" component-padding="0.1" 
+                opacity="0.9" width="0.75" height="0.75" position="0 1.25 0" rotation="-30 0 0">
+
+                <a-gui-icon-button
+                        width="0.5" height="0.5"
+                        onclick="rotate" key-code="88"
+                        icon="loop"
+                </a-gui-icon-button>
+        </a-gui-flex-container>
+
+      <a-plane src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
+      <a-light type="ambient" color="#445451"></a-light>
+      <a-light type="point" intensity="2" position="2 4 4"></a-light>
+      <a-sky src="#skyTexture" radius="30" theta-length="90" height="2048" width="2048"></a-sky>
+      <!--a-entity laser-controls line="color: red; opacity: 0.75"></a-entity-->
+
+      <a-pointcloud id="vgtu"
+        scale="0.5 0.5 0.5" 
+        position="0 3 0" 
+        src="url(Sphere.ply)" 
+        size="0.2"
+	texture="url(VGTU-logo.png)"
+        depthWrite="false">
+      </a-pointcloud>
+
+	<a-entity id="cameraRig" position="0 1.6 3">
+		<a-camera look-controls wasd-controls="enabled:false">
+			<a-gui-cursor id="cursor"
+				raycaster="objects: [gui-interactable]"
+				fuse="true" fuse-timeout="1000"
+				design="dot">
+			</a-gui-cursor>
+		</a-camera>
+	</a-entity>
+
+
+    </a-scene>
+    <script>
+	window.zoom = 0;
+	window.slide = 0;
+	window.rot = 0;
+	window.increment = 0.2;
+	window.position = '0 3 0';
+	window.rotation = '0 0 0';
+
+	window.slideRight= function() { // mobile keycode 65
+		if(slide >=-2){
+			slide -= increment;
+			window.position=slide+' 3 '+zoom;
+			var chart = document.getElementById("vgtu");
+			chart.setAttribute('position', window.position);
+		}
+		console.log('pressed slideRight '+window.position);
+	}
+	window.slideLeft = function() { // mobile keycode 68
+		if(slide <= 2){
+			slide += increment;
+			window.position=slide+' 3 '+zoom;
+			var chart = document.getElementById("vgtu");
+			chart.setAttribute('position', window.position);
+		}
+		console.log('pressed slideLeft '+window.position);
+	}
+
+	window.closeUp = function() { // mobile keycode 87
+		if (zoom <= 0){
+			zoom += increment;
+			window.position=slide+' 3 '+zoom;
+			var chart = document.getElementById("vgtu");
+			chart.setAttribute('position', window.position);
+		}
+		console.log('pressed closeUp '+window.position);
+	}
+	window.backDown = function() { // mobile keycode 83
+		if (zoom >= -6){
+			zoom -= increment;
+			window.position=slide+' 3 '+zoom;
+			var chart = document.getElementById("vgtu");
+			chart.setAttribute('position', window.position);
+		}
+		console.log('pressed backDown '+window.position);
+	}
+
+	window.rotate = function() { // mobile keycode 88
+                //if (zoom >= -6){
+                        rot+=10;
+                        window.rotation=rot+' 0 '+rot;
+                        var chart = document.getElementById("vgtu");
+                        chart.setAttribute('rotation', window.rotation);
+                //}
+                console.log('pressed rotate '+window.rotation);
+        }
+    </script>
+
+  </body>
+</html>
