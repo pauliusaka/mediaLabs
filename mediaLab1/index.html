@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8/>
+<title>Lab 1. Introduction to HTML5 and HLS</title>
+  
+   	<script src="js/control.js"></script>
+	<script src="js/video.js"></script>
+	<link href="css/video-js.css" rel="stylesheet">
+
+</head>
+<body>
+  <h1>My first HLS player</h1>
+
+        <video-js id="my_video_1" class="vjs-default-skin" width="640" height="268">
+                <source id="myVideo" src=https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8 type="application/x-mpegURL">
+        </video-js>
+        <script>var player1;</script>
+	<div id="buttons"></div><br>
+
+	<div id="video"></div>
+        <script>var player2;</script>
+
+        <h2>Playlist</h2>
+        <input type="text" name="url1" size="100" id="myText" value="https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8">
+	<button id="btn1" onclick="Load(this.id)" type="button">Load</button><br>
+        <input type="text" name="url2" size="100" id="myText2" value="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8">
+	<button id="btn2" onclick="Load(this.id)" type="button">Load</button><br>
+
+</body>
+</html>
